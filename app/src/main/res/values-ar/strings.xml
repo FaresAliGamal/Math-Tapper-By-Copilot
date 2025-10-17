@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Math Tapper</string>
+    <string name="accessibility_service_description">يحتاج Math Tapper إلى إذن الوصول لالتقاط محتوى الشاشة والنقر تلقائياً على الإجابات الصحيحة.</string>
+    <string name="enable_service">تفعيل الخدمة</string>
+    <string name="start_solving">بدء الحل</string>
+    <string name="stop_solving">إيقاف الحل</string>
+    <string name="select_regions">اختيار المناطق</string>
+    <string name="question_area">منطقة السؤال</string>
+    <string name="choice_1">الاختيار 1</string>
+    <string name="choice_2">الاختيار 2</string>
+    <string name="choice_3">الاختيار 3</string>
+    <string name="choice_4">الاختيار 4</string>
+    <string name="save_regions">حفظ المناطق</string>
+    <string name="service_enabled">الخدمة مفعلة</string>
+    <string name="service_disabled">الخدمة معطلة - قم بالتفعيل من الإعدادات</string>
+</resources>

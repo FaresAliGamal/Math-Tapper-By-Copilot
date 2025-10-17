@@ -6,12 +6,14 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 public class MathTapperAccessibilityService extends AccessibilityService {
 
@@ -72,37 +74,50 @@ public class MathTapperAccessibilityService extends AccessibilityService {
 
     private void processMathProblem() {
         if (isProcessing) return;
+        
+        // Check if screenshot API is available (API 30+)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            Toast.makeText(this, "Screenshot requires Android 11+", Toast.LENGTH_SHORT).show();
+            isProcessing = false;
+            return;
+        }
+        
         isProcessing = true;
 
         try {
             // Take screenshot
-            takeScreenshot(Display.DEFAULT_DISPLAY, getMainExecutor(), new TakeScreenshotCallback() {
-                @Override
-                public void onSuccess(ScreenshotResult screenshot) {
-                    Bitmap bitmap = Bitmap.wrapHardwareBuffer(
-                            screenshot.getHardwareBuffer(),
-                            screenshot.getColorSpace()
-                    );
-
-                    if (bitmap != null) {
-                        processScreenshot(bitmap);
-                        bitmap.recycle();
-                    } else {
-                        isProcessing = false;
-                    }
-                }
-
-                @Override
-                public void onFailure(int errorCode) {
-                    isProcessing = false;
-                    Toast.makeText(MathTapperAccessibilityService.this, 
-                            "Screenshot failed: " + errorCode, Toast.LENGTH_SHORT).show();
-                }
-            });
+            takeScreenshotCompat();
         } catch (Exception e) {
             isProcessing = false;
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void takeScreenshotCompat() {
+        takeScreenshot(Display.DEFAULT_DISPLAY, getMainExecutor(), new TakeScreenshotCallback() {
+            @Override
+            public void onSuccess(ScreenshotResult screenshot) {
+                Bitmap bitmap = Bitmap.wrapHardwareBuffer(
+                        screenshot.getHardwareBuffer(),
+                        screenshot.getColorSpace()
+                );
+
+                if (bitmap != null) {
+                    processScreenshot(bitmap);
+                    bitmap.recycle();
+                } else {
+                    isProcessing = false;
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                isProcessing = false;
+                Toast.makeText(MathTapperAccessibilityService.this, 
+                        "Screenshot failed: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void processScreenshot(Bitmap fullBitmap) {

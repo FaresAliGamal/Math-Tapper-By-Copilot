@@ -28,6 +28,7 @@ public class OverlayService extends Service {
     private String[] regionKeys = {"question", "choice1", "choice2", "choice3", "choice4"};
     private String[] regionNames = {"Question Area", "Choice 1", "Choice 2", "Choice 3", "Choice 4"};
     private ResizableView currentRegionView;
+    private TextView instructionText;
 
     @Nullable
     @Override
@@ -57,7 +58,7 @@ public class OverlayService extends Service {
         controlPanel.setBackgroundColor(Color.WHITE);
         controlPanel.setPadding(20, 20, 20, 20);
 
-        TextView instructionText = new TextView(this);
+        instructionText = new TextView(this);
         instructionText.setText(regionNames[currentRegionIndex]);
         instructionText.setTextSize(18);
         instructionText.setTextColor(Color.BLACK);
@@ -106,10 +107,7 @@ public class OverlayService extends Service {
             saveAndExit();
         } else {
             // Update instruction text
-            TextView instructionText = overlayView.findViewById(0);
-            if (instructionText instanceof TextView) {
-                ((TextView) instructionText).setText(regionNames[currentRegionIndex]);
-            }
+            instructionText.setText(regionNames[currentRegionIndex]);
             
             // Load next region
             loadRegion(regionKeys[currentRegionIndex]);

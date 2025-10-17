@@ -13,7 +13,7 @@ An Android application that automatically solves multiple-choice math problems b
 
 ## Requirements
 
-- Android 7.0 (API level 24) or higher
+- Android 11.0 (API level 30) or higher (required for screenshot API)
 - Accessibility Service permission
 - Overlay permission (for region selection)
 
@@ -77,7 +77,7 @@ An Android application that automatically solves multiple-choice math problems b
 - **Language**: Java
 - **Build System**: Gradle
 - **OCR**: Google ML Kit Text Recognition
-- **Min SDK**: 24 (Android 7.0)
+- **Min SDK**: 30 (Android 11.0)
 - **Target SDK**: 34 (Android 14)
 
 ## Project Structure
